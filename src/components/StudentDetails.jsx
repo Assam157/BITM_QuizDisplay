@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 function StudentDetails() {
   const navigate = useNavigate();
 
-  // ✅ Central topic list (single source of truth)
+  // ✅ Central topic list
   const topics = [
     "General",
     "Robotics",
@@ -68,18 +68,24 @@ function StudentDetails() {
           onChange={handleChange}
         />
 
+        {/* ✅ CUSTOM TOPIC SELECTOR */}
         <div className="topic-select">
-      {topics.map((topic) => (
-      <div
-      key={topic}
-      className={`topic-option topic-${topic}`}
-      onClick={() =>
-        setStudent((prev) => ({ ...prev, topic }))
-      }
-    >
-      <span className="topic-color" />
-      <span className="topic-label">{topic}</span>
-    </div>
+          {topics.map((topic) => (
+            <div
+              key={topic}
+              className={`topic-option topic-${topic} ${
+                student.topic === topic ? "selected" : ""
+              }`}
+              onClick={() =>
+                setStudent((prev) => ({ ...prev, topic }))
+              }
+            >
+              <span className="topic-color" />
+              <span className="topic-label">{topic}</span>
+            </div>
+          ))}
+        </div>
+
         <button onClick={startQuiz}>Start Quiz</button>
       </div>
     </div>
@@ -87,5 +93,4 @@ function StudentDetails() {
 }
 
 export default StudentDetails;
-
 
