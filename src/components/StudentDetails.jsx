@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function StudentDetails() {
@@ -68,23 +68,19 @@ function StudentDetails() {
           onChange={handleChange}
         />
 
-        {/* ✅ CUSTOM TOPIC SELECTOR */}
-        <div className="topic-select">
+        {/* ✅ SIMPLE TOPIC DROPDOWN */}
+        <select
+          name="topic"
+          value={student.topic}
+          onChange={handleChange}
+        >
+          <option value="">Select Topic</option>
           {topics.map((topic) => (
-            <div
-              key={topic}
-              className={`topic-option topic-${topic} ${
-                student.topic === topic ? "selected" : ""
-              }`}
-              onClick={() =>
-                setStudent((prev) => ({ ...prev, topic }))
-              }
-            >
-              <span className="topic-color" />
-              <span className="topic-label">{topic}</span>
-            </div>
+            <option key={topic} value={topic}>
+              {topic}
+            </option>
           ))}
-        </div>
+        </select>
 
         <button onClick={startQuiz}>Start Quiz</button>
       </div>
@@ -93,4 +89,5 @@ function StudentDetails() {
 }
 
 export default StudentDetails;
+
 
