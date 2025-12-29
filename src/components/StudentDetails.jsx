@@ -68,16 +68,18 @@ function StudentDetails() {
           onChange={handleChange}
         />
 
-        {/* ✅ Dynamic topic selector */}
-        <select name="topic" value={student.topic} onChange={handleChange}>
-          <option value="">Select Topic</option>
-          {topics.map((topic) => (
-            <option key={topic} value={topic}>
-              {topic}
-            </option>
-          ))}
-        </select>
-
+        <div className="topic-select">
+      {topics.map((topic) => (
+      <div
+      key={topic}
+      className={`topic-option topic-${topic}`}
+      onClick={() =>
+        setStudent((prev) => ({ ...prev, topic }))
+      }
+    >
+      <span className="topic-color" />
+      <span className="topic-label">{topic}</span>
+    </div>
         <button onClick={startQuiz}>Start Quiz</button>
       </div>
     </div>
@@ -85,4 +87,5 @@ function StudentDetails() {
 }
 
 export default StudentDetails;
+
 
