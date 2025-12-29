@@ -185,71 +185,7 @@ button:active {
   .certificate h1 {
     font-size: 26px;
   }
- /* ==========================
-   CUSTOM TOPIC SELECT
-========================== */
-.topic-select {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-
-.topic-option {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 14px 16px;
-  border-radius: 10px;
-  background: #020617;
-  border: 1px solid #1e293b;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.topic-option:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
-}
-
-.topic-color {
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-
-/* Topic colors */
-.topic-General .topic-color {
-  background: #64748b;
-}
-
-.topic-Robotics .topic-color {
-  background: #14b8a6;
-}
-
-.topic-AI .topic-color {
-  background: #6366f1;
-}
-
-.topic-WebDevelopment .topic-color {
-  background: #f97316;
-}
-
-.topic-EmbeddedSystems .topic-color {
-  background: #eab308;
-}
-
-.topic-Other .topic-color {
-  background: #94a3b8;
-}
-
-.topic-label {
-  font-size: 16px;
-  font-weight: 600;
-  color: #e5e7eb;
-}
-
+ 
 
   .certificate h2 {
     font-size: 22px;
