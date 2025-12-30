@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import StudentDetails from "./components/StudentDetails";
@@ -22,3 +22,4 @@ function App() {
 }
 
 export default App;
+
