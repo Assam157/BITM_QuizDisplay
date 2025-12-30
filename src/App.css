@@ -185,9 +185,55 @@ button:active {
   .certificate h1 {
     font-size: 26px;
   }
- 
 
   .certificate h2 {
     font-size: 22px;
   }
 }
+/* ------------------------------
+   MCQ OPTION – VISIBILITY FIX
+------------------------------ */
+
+.option-box {
+  position: relative;
+  width: 100%;
+  padding: 14px 16px 14px 48px; /* space for radio */
+  margin-bottom: 12px;
+
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff;
+
+  cursor: pointer;
+}
+
+/* RADIO */
+.option-box input[type="radio"] {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: 2;
+}
+
+/* TEXT – FORCE VISIBILITY */
+.option-text {
+  display: block;
+  color: #000000 !important;   /* ✅ force visible text */
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+/* OPTION LETTER */
+.option-key {
+  font-weight: bold;
+  margin-right: 6px;
+}
+
+/* SELECTED STATE */
+.option-box.selected {
+  border-color: #4caf50;
+  background-color: #e8f5e9;
+}
+
+
