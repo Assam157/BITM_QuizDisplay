@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+const TIME_LIMIT = 10; // seconds
+
 function QuizPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -8,43 +10,67 @@ function QuizPage() {
 
   const [questions, setQuestions] = useState([]);
   const [current, setCurrent] = useState(0);
-  const [answer, setAnswer] = useState("");
+  const [selected, setSelected] = useState(null);
   const [score, setScore] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
 
+  /* ----------------------------
+     Redirect if no student
+  ---------------------------- */
   useEffect(() => {
     if (!student) navigate("/");
   }, [student, navigate]);
 
+  /* ----------------------------
+     Fetch Questions
+  ---------------------------- */
   useEffect(() => {
     fetch(
-  `https://bitm-quizbackend.onrender.com/get-questions?topic=${encodeURIComponent(student.topic)}`
-)
+      `http://localhost:3000/get-questions?topic=${encodeURIComponent(
+        student.topic
+      )}`
+    )
       .then((res) => res.json())
-        .then(data => {
-          console.log("API RESPONSE:", data); // 👈 ADD THIS
-          setQuestions(data.questions);       // ✅ FIX
-  })
+      .then((data) => {
+        console.log("API RESPONSE:", data);
+        setQuestions(data.questions || []);
+      });
   }, []);
 
-  const submitAnswer = () => {
-    if (!answer) return;
+  /* ----------------------------
+     Timer Logic
+  ---------------------------- */
+  useEffect(() => {
+    if (!questions.length) return;
 
-    const correctAnswer =
-      questions[current].answer.trim().toLowerCase();
+    if (timeLeft === 0) {
+      handleSubmit(null); // ⏰ auto submit (timeout)
+      return;
+    }
 
-    const isCorrect =
-      answer.trim().toLowerCase() === correctAnswer;
+    const timer = setTimeout(() => {
+      setTimeLeft((t) => t - 1);
+    }, 1000);
 
-    // ✅ compute next score synchronously
-    const nextScore = isCorrect ? score + 1 : score;
+    return () => clearTimeout(timer);
+  }, [timeLeft, questions]);
+
+  /* ----------------------------
+     Submit Answer
+  ---------------------------- */
+  const handleSubmit = (choice) => {
+    const correct = questions[current].correctAnswer;
+
+    const nextScore =
+      choice && choice === correct ? score + 1 : score;
 
     setScore(nextScore);
-    setAnswer("");
+    setSelected(null);
+    setTimeLeft(TIME_LIMIT);
 
     if (current + 1 < questions.length) {
       setCurrent((c) => c + 1);
     } else {
-      // ✅ pass the CORRECT final score
       navigate("/certificate", {
         state: {
           student,
@@ -55,28 +81,62 @@ function QuizPage() {
     }
   };
 
+  /* ----------------------------
+     UI Guards
+  ---------------------------- */
   if (!questions.length) return <p>Loading questions...</p>;
+
+  const q = questions[current];
 
   return (
     <div className="page-card">
-      <h2>Question {current + 1}</h2>
+      <h2>
+        Question {current + 1} / {questions.length}
+      </h2>
 
-      <p className="quiz-question">
-        {questions[current].question}
-      </p>
+      <div className="timer">
+        ⏳ Time Left: <b>{timeLeft}s</b>
+      </div>
 
-      <textarea
-        placeholder="Your answer"
-        value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
+      <p className="quiz-question">{q.question}</p>
+
+      {/* MCQ OPTIONS */}
+      <div className="options">
+  {Object.entries(q.options).map(([key, value]) => (
+    <div
+      key={key}
+      className={`option-box ${selected === key ? "selected" : ""}`}
+      onClick={() => setSelected(key)}
+    >
+      <input
+        type="radio"
+        checked={selected === key}
+        readOnly
       />
 
-      <button onClick={submitAnswer}>Submit</button>
+      <div className="option-text">
+        <span className="option-key">{key}.</span>
+        <span className="option-value">{value}</span>
+      </div>
+    </div>
+  ))}
+</div>
 
-      <div className="score">Score: {score}</div>
+
+      <button
+        disabled={!selected}
+        onClick={() => handleSubmit(selected)}
+      >
+        Submit
+      </button>
+
+      <div className="score">
+        Score: {score}
+      </div>
     </div>
   );
 }
 
 export default QuizPage;
+
 
