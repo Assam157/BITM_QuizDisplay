@@ -26,7 +26,7 @@ function QuizPage() {
   ---------------------------- */
   useEffect(() => {
     fetch(
-      `http://localhost:3000/get-questions?topic=${encodeURIComponent(
+      `https://bitm-quizbackend.onrender.com/get-questions?topic=${encodeURIComponent(
         student.topic
       )}`
     )
@@ -138,5 +138,6 @@ function QuizPage() {
 }
 
 export default QuizPage;
+
 
 
